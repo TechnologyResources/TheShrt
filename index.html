@@ -26,27 +26,32 @@
     <!-- الخطوط -->
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&display=swap" rel="stylesheet">      <style>
   :root{
-    --bg-deep: #0d1420;
-    --bg-mid: #131c2b;
-    --glass: rgba(232, 230, 225, 0.05);
-    --glass-border: rgba(201, 169, 97, 0.18);
-    --text-main: #e9e6df;
+    --bg-deep: #0a0f1a;
+    --bg-mid: #111a2a;
+    --glass: rgba(232, 230, 225, 0.055);
+    --glass-border: rgba(201, 169, 97, 0.20);
+    --text-main: #f1eee6;
     --text-dim: #9aa3b0;
     --accent-sage: #8fa896;
-    --accent-gold: #c9a961;
+    --accent-gold: #d4b06c;
+    --accent-gold-soft: #c9a961;
   }
   *{ margin:0; padding:0; box-sizing:border-box; }
   html,body{ height:100%; }
+  html{ scroll-behavior: smooth; }
   body{
     font-family:'IBM Plex Sans Arabic', 'Tajawal', sans-serif;
-    background: radial-gradient(circle at 20% 15%, #16233a 0%, transparent 55%),
-                radial-gradient(circle at 85% 80%, #1b2a2a 0%, transparent 50%),
+    background: radial-gradient(circle at 18% 12%, #17253d 0%, transparent 55%),
+                radial-gradient(circle at 88% 78%, #1c2d2c 0%, transparent 52%),
+                radial-gradient(circle at 50% 50%, #0f1626 0%, transparent 70%),
                 linear-gradient(180deg, var(--bg-deep), var(--bg-mid) 60%, var(--bg-deep));
     color: var(--text-main);
     min-height:100vh;
     overflow-x:hidden;
     position:relative;
+    animation: fadeIn .6s ease both;
   }
+  @keyframes fadeIn{ from{ opacity:0; } to{ opacity:1; } }
 
   .aurora{ position:fixed; inset:0; z-index:0; pointer-events:none; overflow:hidden; }
   .aurora span{ position:absolute; border-radius:50%; filter: blur(90px); opacity:0.22; animation: drift 26s ease-in-out infinite alternate; }
@@ -56,42 +61,67 @@
   @keyframes drift{ 0%{ transform: translate(0,0) scale(1);} 100%{ transform: translate(40px,-30px) scale(1.15);} }
   @media (prefers-reduced-motion: reduce){ .aurora span{ animation:none; } }
 
-  main{ position:relative; z-index:1; max-width:1080px; margin:0 auto; padding: 72px 28px 90px; }
-  header{ text-align:center; margin-bottom: 64px; }
+  main{ position:relative; z-index:1; max-width:1080px; margin:0 auto; padding: 64px 28px 90px; }
+  header{ text-align:center; margin-bottom: 56px; animation: dropIn .7s cubic-bezier(.2,.8,.2,1) both; }
+  @keyframes dropIn{ from{ opacity:0; transform: translateY(-14px); } to{ opacity:1; transform:translateY(0); } }
   .eyebrow{
     display:inline-block; font-size:13px; letter-spacing:0.12em; color: var(--accent-gold);
     border:1px solid var(--glass-border); padding:6px 18px; border-radius:999px;
     background: var(--glass); backdrop-filter: blur(8px); margin-bottom:22px; font-weight:500;
   }
   h1{
-    font-family:'Tajawal', sans-serif; font-weight:900; font-size: clamp(34px, 6vw, 56px); line-height:1.25;
+    font-family:'Tajawal', sans-serif; font-weight:900; font-size: clamp(36px, 6.5vw, 60px); line-height:1.22;
     background: linear-gradient(90deg, #f3efe6, var(--accent-gold) 55%, #f3efe6);
+    background-size: 200% auto;
     -webkit-background-clip:text; background-clip:text; color:transparent; margin-bottom:16px;
+    animation: shimmer 6s ease-in-out infinite;
   }
-  header p{ color: var(--text-dim); font-size:16px; max-width:520px; margin:0 auto; line-height:1.9; font-weight:300; }
+  @keyframes shimmer{ 0%,100%{ background-position: 0% 50%; } 50%{ background-position: 100% 50%; } }
+  header p{ color: var(--text-dim); font-size:16px; max-width:540px; margin:0 auto 26px; line-height:1.9; font-weight:300; }
+
+  .visits{
+    display:inline-flex; align-items:center; gap:8px; font-size:12.5px; color: var(--text-dim);
+    border:1px solid var(--glass-border); padding:7px 16px; border-radius:999px;
+    background: var(--glass); backdrop-filter: blur(8px); font-weight:400; letter-spacing:0.02em;
+  }
+  .visits svg{ width:14px; height:14px; stroke: var(--accent-sage); flex-shrink:0; }
+  .visits b{ color: var(--accent-gold); font-weight:700; font-variant-numeric: tabular-nums; }
+  .visits.loading b{ opacity:.35; }
 
   .grid{ display:grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap:22px; }
 
   .card{
     position:relative; display:flex; flex-direction:column; gap:18px; padding:30px 26px;
     border-radius:20px; text-decoration:none; color:inherit;
-    background: linear-gradient(160deg, rgba(255,255,255,0.045), rgba(255,255,255,0.015));
+    background: linear-gradient(160deg, rgba(255,255,255,0.05), rgba(255,255,255,0.015));
     border:1px solid var(--glass-border);
     backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
     box-shadow: 0 8px 30px rgba(0,0,0,0.25);
-    transition: transform .35s cubic-bezier(.2,.8,.2,1), border-color .35s, box-shadow .35s;
+    transition: transform .35s cubic-bezier(.2,.8,.2,1), border-color .35s, box-shadow .35s, background .35s;
     overflow:hidden;
+    opacity:0; transform: translateY(16px);
+    animation: cardIn .6s cubic-bezier(.2,.8,.2,1) forwards;
   }
+  @keyframes cardIn{ to{ opacity:1; transform: translateY(0); } }
+  .card:nth-child(1){ animation-delay:.05s; }
+  .card:nth-child(2){ animation-delay:.12s; }
+  .card:nth-child(3){ animation-delay:.19s; }
+  .card:nth-child(4){ animation-delay:.26s; }
+  .card:nth-child(5){ animation-delay:.33s; }
   .card::before{
     content:""; position:absolute; inset:0;
     background: radial-gradient(220px circle at var(--mx,50%) var(--my,0%), rgba(201,169,97,0.14), transparent 60%);
     opacity:0; transition: opacity .35s; pointer-events:none;
   }
   .card:hover, .card:focus-visible{
-    transform: translateY(-6px); border-color: rgba(201,169,97,0.45);
-    box-shadow: 0 18px 44px rgba(0,0,0,0.4), 0 0 0 1px rgba(201,169,97,0.08); outline:none;
+    transform: translateY(-7px) scale(1.012); border-color: rgba(212,176,108,0.5);
+    background: linear-gradient(160deg, rgba(255,255,255,0.07), rgba(255,255,255,0.02));
+    box-shadow: 0 20px 50px rgba(0,0,0,0.45), 0 0 0 1px rgba(212,176,108,0.1); outline:none;
   }
+  .card:active{ transform: translateY(-3px) scale(1.005); }
   .card:hover::before{ opacity:1; }
+  .card:hover .icon{ border-color: rgba(212,176,108,0.4); transform: rotate(-4deg); }
+  .icon{ transition: transform .35s cubic-bezier(.2,.8,.2,1), border-color .35s; }
 
   .watermark{
     position:absolute; left:-18px; bottom:-24px; width:150px; height:150px;
@@ -113,7 +143,12 @@
   .go svg{ width:15px; height:15px; transition: transform .3s; }
   .card:hover .go svg{ transform: translateX(-4px); }
 
-  footer{ text-align:center; margin-top:70px; color: var(--text-dim); font-size:12.5px; letter-spacing:0.04em; opacity:0.7; }
+  footer{ text-align:center; margin-top:70px; color: var(--text-dim); font-size:12.5px; letter-spacing:0.04em; opacity:0.85; position:relative; padding-top:26px; }
+  footer::before{
+    content:""; position:absolute; top:0; left:50%; transform:translateX(-50%);
+    width:120px; height:1px; background: linear-gradient(90deg, transparent, var(--glass-border), transparent);
+  }
+  footer .heart{ color: var(--accent-gold); }
 </style>
 </head>
 <body>
@@ -125,6 +160,10 @@
     <span class="eyebrow">مجموعة أدوات مختارة</span>
     <h1>TheShrt</h1>
     <p>خمس أدوات صممتها بعناية، كل واحدة تخدم غرضًا مختلفًا. اضغط على أي بطاقة لزيارة الموقع مباشرة.</p>
+    <span class="visits loading" id="visitsBadge">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+      <span>عدد الزيارات:</span> <b id="visitsCount">···</b>
+    </span>
   </header>
 
   <div class="grid">
@@ -190,7 +229,7 @@
 
   </div>
 
-  <footer>صُممت بعناية · جميع الأدوات من تطويري الخاص -Khaled.55783-</footer>
+  <footer>صُممت بعناية <span class="heart">♦</span> جميع الأدوات من تطويري الخاص -Khaled.55783-</footer>
 </main>
 
 <script>
@@ -201,6 +240,25 @@
       card.style.setProperty('--my', (e.clientY - r.top) + 'px');
     });
   });
+
+  // عداد زوار حقيقي (مشترك بين جميع الزوار) عبر CountAPI
+  (function(){
+    var badge = document.getElementById('visitsBadge');
+    var countEl = document.getElementById('visitsCount');
+    var namespace = 'theshrt-khaled55783';
+    var key = 'site-visits';
+    fetch('https://countapi.mileshilliard.com/api/v1/hit/' + namespace + '-' + key)
+      .then(function(r){ return r.json(); })
+      .then(function(data){
+        var n = data && (data.value !== undefined ? data.value : data.count);
+        countEl.textContent = (typeof n === 'number') ? n.toLocaleString('ar-EG') : '—';
+        badge.classList.remove('loading');
+      })
+      .catch(function(){
+        countEl.textContent = '—';
+        badge.classList.remove('loading');
+      });
+  })();
 </script>
 
 </body>
